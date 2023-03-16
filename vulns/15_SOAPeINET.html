@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Objetos SOAP e INET não devem ser usados</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>Objetos SOAP e INET PowerBuilder não suportam o uso de TLS 1.2 e isso o torna vulnerável a ataques.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        global function string hyperlinktourl (integer id) <br><br>
+
+        integer li_rc <br>
+        inet iinet_base <br>
+        veinet veiinet_base <br>
+        iinet_base = CREATE inet <br>
+        veiinet_base = CREATE veinet <br><br>
+        
+        SetPointer(HourGlass!) <br>
+        li_rc = &iinet_base.HyperlinkToURL("https://www.siteteste.com") <br>
+        li_rc = veiinet_base.HyperlinkToURL("https://www.siteteste.com") <br><br>
+
+        DESTROY iinet_base <br><br>
+
+
+        Return "" <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string getUrl (integer id) <br><br>
+
+        integer li_rc <br>
+        inet linet_main <br>
+        internetresult luo_data   // conforme definido acima <br>
+        veinet veiinet <br>
+        veinternetresult veluo_data <br><br>
+
+        veiinet = CREATE veinet <br>
+        linet_main = CREATE inet <br>
+        luo_data = CREATE internetresult <br><br>
+
+        SetPointer(HourGlass!) <br>
+        li_rc = & <br>
+          linet_main.GetURL("https://www.siteteste.com", luo_data) <br>
+        li_rc = & <br>
+          linet_main.GetURL("https://www.siteteste.com", veluo_data) <br><br>
+
+        li_rc = veiinet.GetURL("https://www.siteteste.com", luo_data) <br>
+        li_rc = veiinet.GetURL("https://www.siteteste.com", veluo_data) <br><br>
+
+        SetPointer(Arrow!) <br>
+        IF li_rc = 1 THEN <br>
+           MessageBox("Success!", string(luo_data)) <br>
+        ELSE <br>
+           MessageBox("Failure!", "Oops rc:" + string(li_rc)) <br>
+        END IF <br><br>
+
+        DESTROY luo_data <br>
+        DESTROY linet_main <br><br>
+
+        Return " <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string postUrl (integer id) <br><br>
+
+        Blob lblb_args <br>
+        String ls_headers <br>
+        String ls_url <br>
+        Long ll_length <br>
+        inet iinet <br>
+        veinet veiinet <br>
+        veinternetresult iir_msgbox <br>
+        iinet = CREATE inet <br>
+        veiinet = CREATE veinet <br><br>
+
+        iir_msgbox = CREATE veinternetresult <br>
+        ls_url = "https://www.siteteste.com" <br>
+        ls_url += "EN/powerbuilder-code-pb/" <br>
+        ls_url += "function-source-analysis-documentation-impact.html?" <br>
+        lblb_args = blob("") <br>
+        ll_length = Len(lblb_args) <br>
+        ls_headers = "Content-Length: " & <br>
+           +String(ll_length) + "~n~n" <br>
+        iinet.PostURL & <br>
+           (ls_url, lblb_args, ls_headers, 8080, iir_msgbox) <br><br>
+
+        veiinet.PostURL & <br>
+           (ls_url, lblb_args, ls_headers, 8080, iir_msgbox) <br><br>
+
+        Return "" <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string getproductbyid (integer id); <br><br>
+
+        SoapConnection soapConnection <br>
+        ProductClientProxy productProxyObject <br>
+        long rVal, lLog <br>
+        string productName_string, str_endpoint <br><br>
+
+        str_endpoint = "http://services.xmethods.net:80/soap" <br>
+        soapConnection = create SoapConnection <br><br>
+
+        lLog = soapConnection.SetOptions("SoapLog=~"C:\ProductProxySoapLog.log~"") <br><br>
+
+        rVal = soapConnection.CreateInstance(productProxyObject, & <br>
+           "ProductClientProxy", str_endpoint) <br><br>
+
+        try <br><br>
+
+           productName_string = productProxyObject.GetProductName(id) <br>
+           // Chama o serviço <br>
+           messagebox("Product Detail", "Product Name : " & <br>
+           +productName_string) <br><br>
+
+        catch (SoapException e) <br>
+           messagebox("Error", "Cannot invoke Web service") <br>
+           Return "" <br>
+            // Chama o serviço   <br>
+        end try <br>
+        destroy soapConnection <br><br>
+
+
+        Return productName_string <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string callINETHyperlinkToURL (integer id) <br>
+        integer li_rc <br>
+        SetPointer(HourGlass!) <br>
+        li_rc = & <br>
+          HyperlinkToURL("https://www.siteteste.com") <br><br>
+
+        Return "" <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string callINETGET (integer id) <br>
+        integer li_rc <br>
+        internetresult luo_data  //conforme definido acima <br>
+        luo_data = CREATE internetresult <br><br>
+
+        SetPointer(HourGlass!) <br>
+        li_rc = & <br>
+          GetURL("https://www.siteteste.com", luo_data) <br>
+        SetPointer(Arrow!) <br>
+        IF li_rc = 1 THEN <br>
+           MessageBox("Success!", string(luo_data)) <br>
+        ELSE <br>
+           MessageBox("Failure!", "Oops rc:" + string(li_rc)) <br>
+        END IF <br><br>
+
+        DESTROY luo_data <br><br>
+
+        Return "" <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        global function string callINETPOST (integer id) <br><br>
+
+        Blob lblb_args <br>
+        String ls_headers <br>
+        String ls_url <br>
+        Long ll_length <br>
+        veinternetresult iir_msgbox <br>
+        iir_msgbox = CREATE veinternetresult <br>
+        ls_url = "https://www.siteteste.com" <br>
+        ls_url += "EN/powerbuilder-code-pb/" <br>
+        ls_url += "function-source-analysis-documentation-impact.html?" <br>
+        lblb_args = blob("") <br>
+        ll_length = Len(lblb_args) <br>
+        ls_headers = "Content-Length: " & <br>
+           +String(ll_length) + "~n~n" <br>
+        PostURL &(ls_url, lblb_args, ls_headers, 8080, iir_msgbox) <br><br>
+
+        Return "" <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+      <legend><b>Exemplo de código compatível</b></legend>
+        public function integer ve_postdata (string ve_data, long buffersize);integer   isPost <br>
+        string   ve_data <br>
+        integer ve_li_ret <br>
+        httpclient ve_client <br>
+        ve_li_ret = ve_client.postdata(ve_data,buffersize) <br>
+        return 1 <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        public function integer ve_getdata_package (string ve_url, ref jsonpackage json_pkg);string ls_json <br>
+        string ls_error <br>
+        integer ve_li_ret, li_i <br>
+        httpclient ve_client <br>
+        ve_li_ret = ve_client.sendrequest("GET", ve_url) <br>
+        if ve_li_ret < 0 then <br>
+	        messagebox("Error","Failed") <br>
+        else <br><br>
+
+            ve_li_ret = ve_client.getresponsebody(ls_json) <br><br>
+
+            if ve_li_ret > 0 then <br>
+                 ls_error = json_pkg.loadstring(ls_json) <br>
+ 
+                if ls_error = '' then <br><br>
+
+                else <br>
+                        messagebox(gs_msg_title, "Load Jpackage Failed") <br><br>
+
+                end if <br><br>
+
+            end if <br>
+        end if <br><br>
+
+        return 1 <br>
+        end function <br>
+      </fieldset>
+     
+</body>

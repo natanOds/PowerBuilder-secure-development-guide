@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Consultas de banco de dados não devem ser vulneráveis ​​a ataques de injeção</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>A injeção de código é um ataque que injeta código malicioso que será interpretado/executado pelo aplicativo. Em particular, a injeção de código SQL permite realizar operações ilegais em seu banco de dados (acesso a dados confidenciais, aquisição ou desligamento do servidor…).</li>
+        <li>Por natureza, os aplicativos PowerBuilder são intensivos em banco de dados e de missão crítica.</li>
+        <li>Eles lidam com grandes volumes de dados importantes, o que os torna alvos privilegiados para hackers.</li>
+        <li>Procurar por concatenações de string, usadas para construir SQLs, e não são devidamente validadas ou escapadas. Eles podem criar grandes brechas para a injeção de SQL. Identificar e refatorar essas consultas fortalecerá a proteção do seu banco de dados.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        string query = "DELETE FROM employee WHERE emp_id = '" + Emp_id_var + "'" ; //Código não compatível (Possível injeção de SQL)<br>
+        EXECUTE IMMEDIATE: query; <br>
+      </fieldset><br>
+
+      <fieldset>
+        string query = "INSERT INTO department VALUES ('" + Dept_id_var + "', '" + Dept_name_var + "', '" + Mgr_id_var + "')" ; //Código não compatível (Possível injeção de SQL) <br>
+        EXECUTE IMMEDIATE :query <br>
+      </fieldset><br>
+
+      <fieldset>
+        string query = "Update employee set departmentId = '" + Dept_id_var + "' where  emp_id = '" + Emp_id_var + "'" ; //Código não compatível (Possível injeção de SQL)<br>
+        EXECUTE IMMEDIATE :query<br>
+      </fieldset><br>
+
+      <fieldset>
+        string query = "SELECT emp_id FROM employee "& <br>
+        +"WHERE state = '" + Emp_state_var + "'" //Código não compatível (Possível injeção de SQL)<br>
+        EXECUTE IMMEDIATE :query<br>
+      </fieldset><br>
+
+      <fieldset>
+        string query = "execute emp_select @stateparm='" + Emp_state_var + "'" ; //Código não compatível (Possível injeção de SQL)<br>
+        EXECUTE IMMEDIATE :query<br>
+      </fieldset><br>
+
+      <fieldset>
+        string query = "execute @rc = myproc @parm1='" + var1 + "', @parm2='" + var2 + "' OUTPUT "; //Código não compatível (Possível injeção de SQL)<br>
+        EXECUTE IMMEDIATE :query;<br>
+      </fieldset><br>
+
+
+      <fieldset>
+        <legend><b>Exemplo de código compatível</b></legend>
+        INT Emp_id_var = 56<br><br>
+
+        PREPARE SQLSA <br>
+        FROM "DELETE FROM employee WHERE emp_id =? " ; //Código compatível <br>
+        EXECUTE SQLSA USING :Emp_id_var;<br>
+      </fieldset><br>
+
+      <fieldset>
+        INT Dept_id_var = 156<br><br>
+
+        INT Mgr_id_var<br>
+        String Dept_name_var<br>
+        Dept_name_var = "Department"<br>
+        SetNull(Mgr_id_var)<br><br>
+        
+        PREPARE SQLSA<br>
+        FROM "INSERT INTO department VALUES (?,?,?)" ; //Código compatível<br>
+        EXECUTE SQLSA<br>
+        USING :Dept_id_var, :Dept_name_var, :Mgr_id_var;<br>
+      </fieldset><br>
+
+      <fieldset>
+        INT Emp_id_var = 56<br>
+        INT Dept_id_var = 2<br><br>
+        
+        PREPARE SQLSA<br>
+        FROM "Update employee set departmentId=? where  emp_id=?" ; //Código compatível<br>
+        EXECUTE SQLSA USING :Dept_id_var, :Emp_id_var;<br>
+      </fieldset><br>
+
+      <fieldset>
+        DECLARE my_cursor DYNAMIC CURSOR FOR SQLSA ;<br><br>
+
+        integer Emp_id_var<br><br>
+        
+        string Emp_state_var = "MA"<br>
+        string sqlstatement<br>
+        sqlstatement = "SELECT emp_id FROM employee " &<br>
+        +"WHERE state = ?" //Código compatível<br>
+        PREPARE SQLSA FROM :sqlstatement ;<br>
+        OPEN DYNAMIC my_cursor using :Emp_state_var;<br>
+        FETCH my_cursor INTO :Emp_id_var;<br>
+        CLOSE my_cursor;<br>
+      </fieldset><br>
+
+      <fieldset>
+        DECLARE my_proc DYNAMIC PROCEDURE FOR SQLSA ;<br>
+        integer Emp_id_var<br>
+        string Emp_state_var<br>
+        PREPARE SQLSA FROM "execute emp_select @stateparm =? " ; //Código compatível<br>
+        Emp_state_var = "MA"<br>
+        EXECUTE DYNAMIC my_proc USING :Emp_state_var ;<br>
+        FETCH my_proc INTO :Emp_id_var;<br>
+        CLOSE my_proc;<br>
+      </fieldset><br>
+
+      <fieldset>
+        string var1,var2<br>
+        PREPARE SQLSA FROM "execute @rc = myproc @parm1 =?, @parm2 =? OUTPUT "; //Código compatível<br><br>
+                                
+        DECLARE my_proc DYNAMIC PROCEDURE FOR SQLSA;<br>
+        EXECUTE DYNAMIC my_proc USING :var1, :var2;<br>
+        //obter conjunto de resultados<br>
+        //...<br>
+        //obter valor de retorno e parâmetro de saída<br>
+        FETCH my_proc INTO :var1, :var2;<br>
+        CLOSE my_proc; <br>
+      </fieldset><br>
+</body>

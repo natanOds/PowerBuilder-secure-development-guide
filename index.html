@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+  <h1>GUIA DE BOAS PRATICAS DE DESENVOLVIMENTO SEGURO - POWERBUILDER</h1>
+
+
+  <ul>
+    <li><a href="vulns/01_aes.html">Sempre use o algoritmo de criptografia AES em modo seguro</a><br>
+      O AES oferece vários modos (ECB, CBC, CFB…), alguns deles mais rápidos ou mais seguros.<br>
+      Se você estiver usando AES em seu código PowerBuilder, suas chamadas devem usar os modos mais seguros.</li>
+      <br><br><br>
+
+
+    <li><a href="vulns/02_logProduction.html">Nunca use o log do console na produção</a><br>
+      O log do console é um método para descobrir discretamente o que o código está fazendo e avisar se ocorreu um problema. Ele deve ser desativado na produção, pois pode expor dados confidenciais e revelar informações sobre o funcionamento interno do seu aplicativo. Rastrear esses problemas em seu código do Powerbuilder, para ajudá-lo a desativá-los antes de ir ao ar.</li>
+      <br><br><br>
+
+    <li><a href="vulns/03_CoSetProxyBlanket _CoInitializeSecurity.html">Nunca use</a><br>
+      chamadas CoSetProxyBlanket ou CoInitializeSecurity para sub-rotinas CoSetProxyBlanket, CoInitializeSecurity e CoInitializeSecurityAlias ​​podem gerar brechas de segurança.</li>
+      <br><br><br>
+
+
+    <li><a href="vulns/04_Chaves_criptografia.html">As chaves de criptografia devem ser longas o suficiente</a><br>
+      Para tornar as chaves criptográficas robustas contra ataques de força bruta, elas devem ter um tamanho de chave suficiente.</li>
+      <br><br><br>
+
+    <li><a href="vulns/05_consultaBancos_inject.html">Consultas de banco de dados não devem ser vulneráveis ​​a ataques de injeção</a><br>
+      Code Injection é um ataque que injeta código malicioso que será interpretado/executado pelo aplicativo. Em particular, a injeção de código SQL permite realizar operações ilegais em seu banco de dados (acesso a dados confidenciais, aquisição ou desligamento do servidor…).<br>
+      Por natureza, os aplicativos PowerBuilder são intensivos em banco de dados e de missão crítica.<br>
+      Eles lidam com grandes volumes de dados importantes, o que os torna alvos privilegiados para hackers.
+      <p>Procurar por concatenações de string, usadas para construir SQLs, e não são devidamente validadas ou escapadas. Eles podem criar grandes brechas para a injeção de SQL. Identificar e refatorar essas consultas fortalecerá a proteção do seu banco de dados.</p></li>
+      <br><br><br>
+
+
+    <li><a href="vulns/06_DES_3DES.html">DES (Padrão de Criptografia de Dados) ou 3DES não deve ser usado</a><br>
+      O Padrão de Criptografia de Dados (DES) é um algoritmo de chave simétrica para criptografar dados digitais.<br>
+      Seu comprimento de chave curto de 56 bits o torna inseguro. Não deve mais ser usado.</li>
+      <br><br><br>
+
+    <li><a href="vulns/07_algoritmos_criptografia.html">Algoritmos de criptografia devem ser usados ​​com o modo de segurança e esquema de preenchimento apropriados</a><br>
+      Ao proteger seu código com algoritmos de criptografia, modos de operação e esquemas de preenchimento devem ser usados ​​corretamente. Dependendo do algoritmo de criptografia usado, determinar os valores de preenchimento e modo adequados e verificará se eles são usados ​​corretamente no código do PowerBuilder.</li>
+    <br><br><br>
+
+
+    <li><a href="vulns/08_excecoesGenericas.html">Exceções genéricas não devem ser ignoradas</a><br>
+      Em termos de tratamento de exceções, os blocos CATCH sempre devem ter um mecanismo de captura adequado. Identificar blocos catch vazios para proteger seu código com uma manipulação de exceção significativa.</li>
+      <br><br><br>
+
+
+    <li><a href="vulns/09_enderecoIP.html">Os endereços IP não devem ser codificados.</a><br>
+      A codificação de informações confidenciais, como endereços IP, chaves de criptografia ou senhas, pode expô-los a hackers. Se alguém puder acessar seus arquivos de tempo de execução, poderá descompilá-los e expor essas informações. O vazamento de informações protegidas por regulamentos oficiais como GDPR, SOX, HIPPA pode levar a grandes consequências legais.<br>
+      Procurar por qualquer endereço IP codificado para você remover essa violação de segurança.</li>
+    <br><br><br>
+
+
+
+    <li><a href="vulns/10_IDs.html">IDs de usuário e senhas não devem ser codificadas</a><br>
+      Informações confidenciais codificadas, como nomes de usuário ou senhas, endereços IP e chaves de criptografia, podem expô-las a hackers. Qualquer pessoa que acesse os arquivos executáveis ​​pode descompilá-los e encontrar as informações confidenciais. O vazamento de dados protegidos por regulamentações oficiais como GDPR, SOX, HIPPA pode gerar graves consequências legais.
+      <p>Procurar por IDs de usuário e senhas codificados, para permitir que você remova essas brechas de segurança.</p></li>
+      <br><br><br>
+
+    <li><a href="vulns/11_PathTraversal.html">A entrada do usuário não deve permitir injeção de caminho ou ataques transversais de caminho</a><br>
+      Os dados inseridos pelos usuários, como parâmetros de URL ou cookies, devem ser considerados suspeitos. Se o seu código gerar dinamicamente um caminho do sistema de arquivos a partir desses dados, um hacker poderá injetar valores específicos como '../' e alterar o caminho pretendido originalmente.<br>
+      <p>Esses ataques são frequentemente chamados de "travessia de caminho" ou "travessia de diretório". Eles permitem que o invasor acesse diretórios proibidos para ler, modificar ou excluir dados confidenciais ou executar comandos do sistema operacional.</p>
+      <p>Identificar o código que apresenta essas vulnerabilidades para permitir que você o limpe. Uma possível estratégia de defesa consiste em definir uma lista branca de caminhos ou personagens autorizados.</p></li>
+      <br><br><br>
+
+
+    <li><a href="vulns/12_OSCommand.html">Os comandos do SO não devem permitir ataques de injeção</a><br>
+      Se o seu código executa comandos do sistema operacional com base na entrada do usuário, ele deve verificar o nome de cada comando. Caso contrário, um hacker pode injetar seus próprios comandos para realizar operações ilegais e comprometer seu sistema.
+      <p>Detectar essas falhas em seu código do PowerBuilder, para que você possa corrigi-las. Por exemplo, você pode definir uma lista branca de comandos seguros e limpar os metacaracteres do shell.</p></li>
+      <br><br><br>
+
+
+    <li><a href="vulns/13_DDOs.html">Expressões regulares não devem permitir ataques de negação de serviço</a><br>
+      É altamente desaconselhável gerar expressões regulares a partir de dados do usuário, porque pode levar a negação de serviço de expressão regular (ReDoS). Esse tipo de ataque explora a possibilidade de desacelerar drasticamente a avaliação de expressões regulares usando caracteres específicos de forma maliciosa. Um invasor pode induzir essa situação quando um programa usa uma expressão regular e a bloqueia por muito tempo (daí a negação de serviço).
+      <p>Apontar tais chamadas em seu código PowerBuilder, permitindo que você as remova ou desinfete a entrada removendo/aniquilando metacaracteres regex.</p></li>
+      <br><br><br>
+
+    <li><a href="vulns/14_HashCriptoSha1.html">Funções hash criptográficas não devem usar algoritmos SHA-1 ou Message-Digest</a><br>
+      Os algoritmos SHA-1 e Message-Digest: os algoritmos MD2, MD4, MD5 e MD6 <a target="_blank" href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">não são mais considerados seguros</a>. Verificar se tais algoritmos são usados ​​em seu código PowerBuilder e localizará as chamadas correspondentes, para ajudá-lo a atualizá-los com outros mais seguros.</li>
+      <br><br><br>
+
+      
+    <li><a href="vulns/15_SOAPeINET.html">Objetos SOAP e INET não devem ser usados</a><br>
+      ​​Objetos SOAP e INET PowerBuilder não suportam o uso de TLS 1.2 e isso o torna vulnerável a ataques.</li>
+      <br><br><br>
+  </ul>
+
+
+
+</body>

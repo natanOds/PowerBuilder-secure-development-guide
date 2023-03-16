@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>DES (Data Encryption Standard) ou 3DES não deve ser usado</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>O Data Encryption Standard (DES) é um algoritmo de chave simétrica para criptografar dados digitais. Seu comprimento de chave curto de 56 bits o torna inseguro. Não deve mais ser usado.</li>
+        <li>Encontrar todas as chamadas DES em seu código PowerBuilder, para que você possa removê-las.</li>
+    </ul>
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        loo_Crypt = create oleobject <br>
+        loo_Crypt.CryptAlgorithm = "des" //Não pode usar DES<br>
+      </fieldset><br>
+
+      <fieldset>
+        CrypterObject lnv_CrypterObject<br>
+        lnv_CrypterObject = Create CrypterObject<br>
+        lblb_encrypt = lnv_CrypterObject.SymmetricEncrypt(DES!, lblb_data, lblb_key, &OperationModeCBC!, lblb_iv, PKCSPadding!) //Não pode usar DES <br>
+      </fieldset><br>
+
+
+
+
+</body>

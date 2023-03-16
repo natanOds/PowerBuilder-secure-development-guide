@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>IDs de usuário e senhas não devem ser codificadas</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>Codificar informações confidenciais, como nomes de usuário ou senhas, endereços IP e chaves de criptografia, pode expô-los a hackers. Qualquer pessoa que acesse os arquivos executáveis ​​pode descompilá-los e encontrar as informações confidenciais. O vazamento de dados protegidos por regulamentações oficiais como GDPR, SOX, HIPPA pode gerar graves consequências legais.</li>
+        <li>Procurar IDs de usuário e senhas codificados, para permitir que você remova essas brechas de segurança.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        DBParm="ConnectString = 'DSN=Sales;UID=dba@123;PWD=sql1$12'" // Código não compatível (a senha é codificada) <br>
+      </fieldset><br>
+
+      <fieldset>
+        SQLCA lnv_SQLCA <br>
+        lnv_SQLCA = Create SQLCA <br>
+        lnv_SQLCA.DBParm="ConnectString = 'DSN=Sales;UID=dba;PWD=sql'" // Código não compatível (a senha é codificada) <br>
+      </fieldset><br>
+
+      <fieldset>
+      <legend><b>Exemplo de código compatível</b></legend>
+        DBParm="ConnectString = 'DSN=Sales;UID=" + txtuserId.Text + ";PWD=" + txtPassword.Text + "'" //Código compatível
+      </fieldset><br>
+</body>

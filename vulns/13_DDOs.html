@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Expressões regulares não devem permitir ataques de negação de serviço</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>É altamente desaconselhável gerar expressões regulares a partir de dados do usuário, porque isso pode levar à negação de serviço de expressão regular (ReDoS). Esse tipo de ataque explora a possibilidade de que a maioria das implementações de expressão possam atingir situações extremas, diminuindo drasticamente sua velocidade. Um invasor pode induzir essa situação quando um programa usa uma expressão regular e a bloqueia por muito tempo (daí a negação de serviço).</li>
+    </ul><br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        global function string matchRegexTest2 (string regPattern) <br>
+        string findtext <br>
+        findtext = "Ola Mundo" <br>
+        Match(findtext, regPattern) <br>
+        Return regPattern <br>
+        end function <br>
+      </fieldset><br>
+
+      <fieldset>
+        <legend><b>Exemplo de código compatível</b></legend>
+        global function string matchRegexTest1 (string regPattern) <br>
+        Match("hi test123", "^[A-Za-z]") <br>
+        Return regPattern <br>
+        end function <br>
+      </fieldset><br>
+
+      
+</body>

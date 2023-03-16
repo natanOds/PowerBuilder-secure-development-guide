@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Nunca use o registro do console na produção</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>O log do console é um método para descobrir discretamente o que o código está fazendo e avisar se ocorreu um problema. Ele deve ser desativado na produção, pois pode expor dados confidenciais e revelar informações sobre o funcionamento interno do seu aplicativo. Rastrear esses problemas em seu código do Powerbuilder, para ajudá-lo a desativá-los antes de ir ao ar.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        FUNCTION ulong WriteConsole(long Handle, String OutPut, long NumCharsToWrite, &REF long NumCharsWritten, long reserved) LIBRARY "Kernel32.dll" ALIAS FOR "WriteConsoleW"
+ <br>
+      </fieldset><br>

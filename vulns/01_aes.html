@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>Sempre use o algoritmo de criptografia AES em um modo seguro</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>O AES oferece vários modos (ECB, CBC, CFB…), alguns deles mais rápidos ou mais seguros.</li>
+        <li>Se você estiver usando AES em seu código PowerBuilder, suas chamadas devem usar os modos mais seguros. Examinar o seu aplicativo e encontrar chamadas menos seguras e as destacará em seu código.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        loo_Crypt = create oleobject <br>
+        loo_Crypt.CryptAlgorithm = "aes" <br>
+        loo_Crypt.CipherMode = "cbc" // cbc não está em conformidade
+      </fieldset><br>
+
+      <fieldset>
+        loo_Crypt = create oleobject <br>
+        loo_Crypt.CryptAlgorithm = "aes" <br> 
+        loo_Crypt.CipherMode = "ctr" // ctr não é compatível <br>
+      </fieldset><br>
+
+      <fieldset>
+        Blob lblb_data </br>
+        Blob lblb_key </br>
+        Blob lblb_iv </br>
+        Blob lblb_encrypt</br> </br>
+
+        lblb_data = Blob("Test DES", EncodingANSI!) </br>
+        lblb_key = Blob("Test Key12345678", EncodingANSI!) </br>
+        lblb_iv = Blob("Test IV 12345678", EncodingANSI!) </br></br>
+
+        CrypterObject lnv_CrypterObject </br>
+        lnv_CrypterObject = Create CrypterObject </br></br>
+
+        lblb_encrypt = lnv_CrypterObject.SymmetricEncrypt(AES!, lblb_data, lblb_key, &OperationModeCBC!, lblb_iv, PKCSPadding!) // OperationModeCBC! e OperationModeCFB! não é conformidade
+      </fieldset><br>
+
+
+
+</body>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>As chaves de criptografia devem ser longas o suficiente</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>Para tornar as chaves criptográficas robustas contra ataques de força bruta, elas devem ter um tamanho de chave suficiente. Informar se as chaves não robustas são usadas em seu código do PowerBuilder.</li>
+    </ul>
+
+    <br><br>
+   
+    <fieldset>
+    <legend><b>Exemplo de código não compatível</b></legend>
+        CrypterObject lnv_CrypterObject <br>
+        lnv_CrypterObject = Create CrypterObject <br>
+        // Gerar a chave <br>
+        li_return = lnv_CrypterObject.AsymmetricGenerateKey(RSA!, 1024, lblb_privKey, lblb_pubKey) // Código não compatível (comprimento da chave < 2048)
+      </fieldset><br>
+
+      <fieldset>
+      <legend><b>Exemplo de código compatível</b></legend>
+        CrypterObject lnv_CrypterObject <br>
+        lnv_CrypterObject = Create CrypterObject <br>
+        // Gerar a chave <br>
+        li_return = lnv_CrypterObject.AsymmetricGenerateKey(RSA!, 2048, lblb_privKey, lblb_pubKey) //Código compatível (Comprimento da chave >= 2048, recomendação NIST)
+      </fieldset><br>
+
+</body>

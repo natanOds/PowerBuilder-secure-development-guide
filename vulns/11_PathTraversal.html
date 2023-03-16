@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <h1>A entrada do usuário não deve permitir injeção de caminho ou ataques transversais de caminho</h1>
+
+    <p>Descrição da regra</p>
+
+    <ul>
+        <li>Os dados inseridos pelos usuários, como parâmetros de URL ou cookies, devem ser considerados suspeitos. Se o seu código gerar dinamicamente um caminho do sistema de arquivos a partir desses dados, um hacker poderá injetar valores específicos como '../' e alterar o caminho pretendido originalmente.</li>
+        <li>Esses ataques são frequentemente chamados de "travessia de caminho" ou "travessia de diretório". Eles permitem que o invasor acesse diretórios proibidos para ler, modificar ou excluir dados confidenciais ou executar comandos do sistema operacional.</li>
+        <li>Identificar o código que apresenta essas vulnerabilidades para permitir que você o limpe.</li>
+        <li>Uma possível estratégia de defesa consiste em definir uma lista branca de caminhos ou personagens autorizados.</li>
+    </ul>
+    <br><br>
+   
+    <fieldset>
+        <legend><b>Exemplo de código não compatível</b></legend>
+        global function string testDelete (string docname) <br>
+        boolean lb_exist <br>
+        string ls_docname <br>
+        ve_filehelper_utils helper <br><br>
+
+        lb_exist = FileExists(docname) <br><br>
+
+        FileDelete(docname) //Código não compatível <br><br>
+
+        helper.FileDelete(docname) <br><br>
+
+        Return docname<br>
+        end function<br>
+      </fieldset><br>
+</body>
