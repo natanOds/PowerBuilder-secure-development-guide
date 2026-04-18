@@ -60,7 +60,7 @@ No server required. No dependencies. Works offline.
 ## Background
 
 Developed during AppSec engagements on legacy enterprise systems built with  
-PowerBuilder — a platform widely used in banking, insurance, and capital markets.  
+PowerBuilder — a platform widely used in banking.  
 These rules were validated through manual code review and static analysis.
 
 ---
